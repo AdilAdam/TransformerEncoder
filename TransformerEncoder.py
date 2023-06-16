@@ -241,7 +241,7 @@ label = torch.tensor(label)
 
 data = torch.tensor(data)
 for i in range(2000):
-    model.eval()
+    model.train()
     pred = model(data)
     pred = pred.transpose(2, 1)
     loss = lossfn(pred, label)
