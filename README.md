@@ -1,4 +1,5 @@
-![Transformer-encoder](https://github.com/AdilAdam/TransformerEncoder/assets/126153483/2656c954-af2d-4cdd-8fbe-2b420538dbdc)
+![Transformer-encoder](https://github.com/AdilAdam/TransformerEncoder/assets/126153483/120b0585-20ee-4273-b714-b9d909546b6c)
+
 
 
 ## TODO
