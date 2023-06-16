@@ -1,4 +1,5 @@
-![Transformer-encoder](https://github.com/AdilAdam/TransformerEncoder/assets/126153483/bd89ce18-b5f8-41e2-9c72-4ba41221c195)
+![Transformer-encoder](https://github.com/AdilAdam/TransformerEncoder/assets/126153483/2656c954-af2d-4cdd-8fbe-2b420538dbdc)
+
 
 ## TODO
 - Transformer encoder implementation for learning or research purpose.
