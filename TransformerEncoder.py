@@ -213,7 +213,7 @@ class Transformer_Encoder(nn.Module):
 
 model = Transformer_Encoder()
 
-# model.eval()
+
 # model_size = sum(p.numel() for p in model.parameters()) / (1024*1024)
 
 dict_ = {"2": 1, "8": 2, "14": 3}
@@ -241,6 +241,7 @@ label = torch.tensor(label)
 
 data = torch.tensor(data)
 for i in range(2000):
+    model.eval()
     pred = model(data)
     pred = pred.transpose(2, 1)
     loss = lossfn(pred, label)
