@@ -68,8 +68,11 @@ class ScaledDotProductAttention(nn.Module):
 
 
 class Multiheadattention(nn.Module):
-    def __init__(self, d_model: int, n_heads: int, drop_rate: float = 0.0):
-        super().__init__()
+    def __init__(self, 
+                 d_model: int, 
+                 n_heads: int, 
+                 drop_rate: float = 0.0):
+        super(Multiheadattention, self).__init__()
         assert d_model % n_heads == 0
         self.d_k = self.d_v = d_model // n_heads
         self.h = n_heads
@@ -163,8 +166,8 @@ class Encoder(nn.Module):
         self,
         num_layer: int = 4,
         vocab_size: int = 16,
-        n_heads: int = 4,
         d_model: int = 256,
+        n_heads: int = 4,
         hidden_size: int = 256,
         drop_rate: float = 0.5,
     ):
@@ -172,7 +175,10 @@ class Encoder(nn.Module):
         self.emb = nn.Embedding(vocab_size, d_model)
         self.pos = Posionalencoding(d_model, drop_rate=drop_rate)
         self.layer = nn.ModuleList(
-            EncoderBlock(n_heads, d_model, hidden_size, drop_rate=drop_rate)
+            EncoderBlock(n_heads, 
+                         d_model, 
+                         hidden_size, 
+                         drop_rate=drop_rate)
             for _ in range(num_layer)
         )
 
@@ -184,20 +190,24 @@ class Encoder(nn.Module):
         return out, xs
 
 
-class Transformer_Encoder(nn.Module):
+class TransformerEncoder(nn.Module):
     def __init__(
         self,
-        num_layer=8,
-        vocab_size=50,
-        n_heads=8,
-        d_model=512,
-        hidden_size=1024,
-        drop_rate=0.5,
-        num_class: int = 4,
+        num_layer: int=8,
+        vocab_size: int=50,
+        n_heads: int=8,
+        d_model: int=512,
+        hidden_size: int=1024,
+        drop_rate: float=0.5,
+        num_class: int =4,
     ):
-        super().__init__()
-        self.encoder = Encoder(
-            num_layer, vocab_size, n_heads, d_model, hidden_size, drop_rate
+        super(TransformerEncoder, self).__init__()
+        self.encoder = Encoder(num_layer,
+                               vocab_size,  
+                               d_model, 
+                               n_heads,
+                               hidden_size, 
+                               drop_rate,
         )
         self.layer_norm = nn.LayerNorm(d_model)
         self.classifer = nn.Linear(d_model, num_class)
@@ -211,7 +221,7 @@ class Transformer_Encoder(nn.Module):
         return self.activ(x)
 
 
-model = Transformer_Encoder()
+model = TransformerEncoder()
 
 
 # model_size = sum(p.numel() for p in model.parameters()) / (1024*1024)
