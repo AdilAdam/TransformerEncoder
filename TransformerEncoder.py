@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
+import json
 import math
 
 import torch
@@ -46,7 +47,6 @@ class Posionalencoding(nn.Module):
         # self.register_buffer("pe", self.pe, persistent=False)
 
     def forward(self, x: torch.Tensor):
-
         self.pe = self.pe.to(device=x.device, dtype=x.dtype)
         x = x * self.xscale + self.pe[:, : x.size(1)]
         return self.drop_out(x)
@@ -70,10 +70,7 @@ class ScaledDotProductAttention(nn.Module):
 
 
 class Multiheadattention(nn.Module):
-    def __init__(self, 
-                 d_model: int, 
-                 n_heads: int, 
-                 drop_rate: float = 0.0):
+    def __init__(self, d_model: int, n_heads: int, drop_rate: float = 0.0):
         super(Multiheadattention, self).__init__()
         assert d_model % n_heads == 0
         self.d_k = self.d_v = d_model // n_heads
@@ -95,7 +92,6 @@ class Multiheadattention(nn.Module):
         v: torch.Tensor,
         mask: torch.Tensor = None,
     ) -> torch.Tensor:
-
         # q,k,v : [batch_size, sequence_len, d_model]
         residual = q
         n_batch, seq_len = q.size(0), q.size(1)
@@ -141,7 +137,6 @@ class PositionwiseFeedForward(torch.nn.Module):
         self.w_2 = torch.nn.Linear(hidden_units, idim)
 
     def forward(self, xs: torch.Tensor) -> torch.Tensor:
-
         return self.w_2(self.dropout(self.activation(self.w_1(xs)))), xs
 
 
@@ -177,10 +172,7 @@ class Encoder(nn.Module):
         self.emb = nn.Embedding(vocab_size, d_model)
         self.pos = Posionalencoding(d_model, drop_rate=drop_rate)
         self.layer = nn.ModuleList(
-            EncoderBlock(n_heads, 
-                         d_model, 
-                         hidden_size, 
-                         drop_rate=drop_rate)
+            EncoderBlock(n_heads, d_model, hidden_size, drop_rate=drop_rate)
             for _ in range(num_layer)
         )
 
@@ -195,21 +187,22 @@ class Encoder(nn.Module):
 class TransformerEncoder(nn.Module):
     def __init__(
         self,
-        num_layer: int=8,
-        vocab_size: int=50,
-        n_heads: int=8,
-        d_model: int=512,
-        hidden_size: int=1024,
-        drop_rate: float=0.5,
-        num_class: int =4,
+        num_layer: int = 8,
+        vocab_size: int = 50,
+        n_heads: int = 8,
+        d_model: int = 512,
+        hidden_size: int = 1024,
+        drop_rate: float = 0.5,
+        num_class: int = 4,
     ):
         super(TransformerEncoder, self).__init__()
-        self.encoder = Encoder(num_layer,
-                               vocab_size,  
-                               d_model, 
-                               n_heads,
-                               hidden_size, 
-                               drop_rate,
+        self.encoder = Encoder(
+            num_layer,
+            vocab_size,
+            d_model,
+            n_heads,
+            hidden_size,
+            drop_rate,
         )
         self.layer_norm = nn.LayerNorm(d_model)
         self.classifer = nn.Linear(d_model, num_class)
@@ -226,24 +219,14 @@ class TransformerEncoder(nn.Module):
 model = TransformerEncoder()
 
 
-# model_size = sum(p.numel() for p in model.parameters()) / (1024*1024)
+model_size = sum(p.numel() for p in model.parameters()) / (1024 * 1024)
+print("Model size: {:.3f} MB".format(model_size))
 
-dict_ = {"2": 1, "8": 2, "14": 3}
-
-data = [
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-    [15, 7, 9, 4, 12, 6, 2, 3, 8, 11, 14, 5, 13, 1, 10],
-    [10, 15, 3, 8, 5, 6, 13, 12, 9, 1, 11, 14, 7, 4, 2],
-]
-
-label = [
-    [0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 3, 0],
-    [0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 3, 0, 0, 0, 0],
-    [0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1],
-]
-
-
-valid = []
+data = "./data.json"
+f = open(data)
+data = json.load(f)
+train_data = data["data"]["train"]
+label = data["data"]["label"]
 model_size = sum(p.numel() for p in model.parameters()) * 4 / 2**20
 lossfn = nn.CrossEntropyLoss()
 pred_logmax = nn.LogSoftmax(dim=1)
@@ -251,7 +234,7 @@ lr = 1e-4
 optermizer = torch.optim.Adam(model.parameters(), lr=lr)
 label = torch.tensor(label)
 
-data = torch.tensor(data)
+data = torch.tensor(train_data)
 for i in range(2000):
     model.train()
     pred = model(data)
