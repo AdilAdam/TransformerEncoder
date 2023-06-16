@@ -1,4 +1,5 @@
-
+#!/usr/bin/env python
+# encoding: utf-8
 
 import torch
 import torch.nn as nn
@@ -62,7 +63,6 @@ class Multiheadattention(nn.Module):
         out = self.layer_norm(out)
 
         return out, attn
-
 
 
 class PositionwiseFeedForward(torch.nn.Module):

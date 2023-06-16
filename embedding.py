@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# encoding: utf-8
+
 import math
 
 import torch
@@ -46,4 +49,3 @@ class Posionalencoding(nn.Module):
         self.pe = self.pe.to(device=x.device, dtype=x.dtype)
         x = x * self.xscale + self.pe[:, : x.size(1)]
         return self.drop_out(x)
-

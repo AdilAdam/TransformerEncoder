@@ -3,10 +3,8 @@
 
 import torch.nn as nn
 
-from embedding import Posionalencoding, Embedding
-from attention import Multiheadattention
-from attention import PositionwiseFeedForward
-
+from attention import Multiheadattention, PositionwiseFeedForward
+from embedding import Embedding, Posionalencoding
 
 
 class EncoderBlock(nn.Module):
