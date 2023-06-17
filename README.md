@@ -3,6 +3,7 @@
 <div align="center">
 
 **PyTorch implementation of Transformer encoder: Transformer encoder for Speech Recognition.**
+                          just for learning or research purpose
 
   
 </div>
