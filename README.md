@@ -25,7 +25,10 @@
           <img src="http://img.shields.io/badge/docs-passing-success"> 
      </a>
   
-transformer model is a neural network that learns context and thus meaning by tracking relationships in sequential data like the words in this sentence, which means Transformer models are good at capturing content-based global interactions.Transformer models apply an evolving set of mathematical techniques, called attention or self-attention, to detect subtle ways even distant data elements in a series influence and depend on each other.
+Transformer model is a neural network that learns context and thus meaning by tracking relationships in sequential data like the words in this sentence, which means Transformer models are good at capturing content-based global interactions.Transformer models apply an evolving set of mathematical techniques, called attention or self-attention, to detect subtle ways even distant data elements in a series influence and depend on each other.
+![transformer](https://github.com/AdilAdam/TransformerEncoder/assets/126153483/10518eb5-a2c2-4108-9735-0c37f093320c)
+
+In this repository just transformer encoder was implemented, for more detail further check the paper [Attention Is All You Need](https://arxiv.org/pdf/1706.03762.pdf)
 
 ## TODO
 - Transformer encoder implementation for learning or research purpose.
