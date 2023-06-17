@@ -2,7 +2,7 @@
 
 <div align="center">
 
-**PyTorch implementation of Transformer encoder: Transformer encoder for Speech Recognition.**
+**PyTorch implementation of Transformer encoder: Transformer encoder for Classification Tasks.**
                           
 **just for learning or research purpose**
 
